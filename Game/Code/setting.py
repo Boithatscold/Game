@@ -1,8 +1,8 @@
 # game setup
-scr_wide   = 1980 
-scr_high   = 1020
+scr_wide   = 1230
+scr_high   = 800
 fps      = 60
-TILESIZE = 64
+TILESIZE = 16
  
 WORLD_MAP = [
 ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],
