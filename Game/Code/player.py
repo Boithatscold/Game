@@ -2,7 +2,67 @@ import pygame
 from setting import *
 
 class Player(pygame.sprite.Sprite):
-    def _init_(self,pos,Groups):
-        super()._init_(Groups)
-        self.image = pygame.image.load('../Images/Player.png').convert_alpha()
+    def __init__(self,pos,Groups,obs_sprites):
+        super().__init__(Groups)
+        self.image = pygame.image.load('../Images/Idle 1.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(0,-26)
+        
+        self.direction = pygame.math.Vector2()
+        self.speed = 5
+        
+        self.obs_sprites = obs_sprites
+        
+    def input(self):
+        # Movement
+        
+        keys = pygame.key.get_pressed()
+        
+        if keys[pygame.K_UP]:
+            self.direction.y = -1
+        elif keys[pygame.K_DOWN]:
+            self.direction.y = 1
+        else:
+            self.direction.y = 0
+        
+        if keys[pygame.K_LEFT]:
+            self.direction.x = -1
+        elif keys[pygame.K_RIGHT]:
+            self.direction.x = 1
+        else:
+            self.direction.x = 0
+        
+    def move(self,speed):
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+       
+        # self.rect.center +=self.direction * speed
+        
+        self.hitbox.x += self.direction.x * speed
+        self.collision('horizontal')
+        self.hitbox.y += self.direction.y * speed
+        self.collision('vertical')
+        self.rect.center = self.hitbox.center
+        
+    def collision(self,direction):
+        if direction == 'horizontal':
+            for sprite in self.obs_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if self.direction.x > 0: #moving right
+                        self.hitbox.right = sprite.hitbox.left
+                    
+                    if self.direction.x < 0: #moving left
+                        self.hitbox.left = sprite.hitbox.right
+        
+        if direction == 'vertical':
+            for sprite in self.obs_sprites:
+                if sprite.rect.colliderect(self.hitbox):
+                    if self.direction.y > 0: #moving down
+                        self.hitbox.bottom = sprite.rect.top
+                    
+                    if self.direction.y < 0: #moving up
+                        self.hitbox.top = sprite.hitbox.bottom
+        
+    def update(self):
+        self.input()
+        self.move(self.speed)
