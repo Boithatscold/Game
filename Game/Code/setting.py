@@ -1,6 +1,6 @@
 # game setup
-scr_wide   = 1280 
-scr_high   = 720
+scr_wide   = 1980 
+scr_high   = 1020
 fps      = 60
 TILESIZE = 64
  
