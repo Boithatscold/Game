@@ -19,7 +19,7 @@ class Level:
     def create_map(self):
         
         layouts = {
-            'boundary': import_csv_layout('../Images/Map/Map_Floor Block.csv')
+            'boundary': import_csv_layout('../Images/Map/Map_Border.csv')
             
             }
         for style,layout in layouts.items():
@@ -32,7 +32,7 @@ class Level:
         
         
         
-        self.player = Player((0,0),[self.vis_sprites],self.obs_sprites)
+        self.player = Player((1000,1000),[self.vis_sprites],self.obs_sprites)
     
     def run(self):
         #updates and Draw the game
@@ -52,12 +52,13 @@ class CameraGroupY(pygame.sprite.Group):
        
        #creating the floor
        
-       for row_index,row in enumerate(WORLD_MAP):
-           for col_index, col in enumerate(row):
-               x = col_index * TILESIZE
-               y = row_index * TILESIZE
-       self.size = x,y
-       self.floor_surf = pygame.transform.scale(pygame.image.load('../Images/Map/Map.png').convert(),self.size,self.display_surface)
+       # for row_index,row in enumerate(WORLD_MAP):
+       #     for col_index, col in enumerate(row):
+       #         x = col_index * (TILESIZE+2)
+       #         y = row_index * (TILESIZE+2)
+       #         self.size = (x,y)
+       
+       self.floor_surf = pygame.image.load('../Images/Map/Map.png').convert()
        self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
        
        

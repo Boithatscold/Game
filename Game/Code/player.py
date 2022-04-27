@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(Groups)
         self.image = pygame.image.load('../Images/Idle 1.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0,-26)
+        self.hitbox = self.rect.inflate(0,-20)
         
         self.direction = pygame.math.Vector2()
         self.speed = 5
@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
        
-        # self.rect.center +=self.direction * speed
+        
         
         self.hitbox.x += self.direction.x * speed
         self.collision('horizontal')
@@ -48,20 +48,25 @@ class Player(pygame.sprite.Sprite):
         if direction == 'horizontal':
             for sprite in self.obs_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.x > 0: #moving right
+                    if self.direction.x < 0: #moving right
                         self.hitbox.right = sprite.hitbox.left
+                        print("Right")
+                        print(self.direction.x)
                     
-                    if self.direction.x < 0: #moving left
+                    if self.direction.x > 0: #moving left
                         self.hitbox.left = sprite.hitbox.right
-        
+                        print("left")
+                        print(self.direction.x)
         if direction == 'vertical':
             for sprite in self.obs_sprites:
                 if sprite.rect.colliderect(self.hitbox):
-                    if self.direction.y > 0: #moving down
+                    if self.direction.y < 0: #moving down
                         self.hitbox.bottom = sprite.rect.top
+                        print('top')
                     
-                    if self.direction.y < 0: #moving up
+                    if self.direction.y > 0: #moving up
                         self.hitbox.top = sprite.hitbox.bottom
+                        print('bot')
         
     def update(self):
         self.input()
